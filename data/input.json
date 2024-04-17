@@ -86,5 +86,10 @@
   "experimentalDeviation": {
     "description": "Experimental deviation (percent)",
     "value": 10
+  },
+
+  "randomness": {
+    "description": "the option for establishing new randon configuration or load from the file",
+    "value": 1
   }
 }

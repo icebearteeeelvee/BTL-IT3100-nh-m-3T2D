@@ -101,6 +101,8 @@ int main(int argc, char **argv)
             }
         } while (input1 != "1" && input1 != "2");
     }
+    
+  
     else
     {
         juncDataList = Utility::convertMapData(mapData);
