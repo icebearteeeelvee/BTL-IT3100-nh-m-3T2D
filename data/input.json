@@ -47,30 +47,44 @@
     "description": "Percentage of people stopping at the hallway",
     "value": 2
   },
-  "p1": {
-    "description": "Percentage of agents (No disability, without overtaking behavior)",
-    "value": 22
+  "walkability" : {
+    "description" : "velocity distribution of pedestrians",
+    "distribution" : {
+      "noDisabilityNoOvertaking" : {
+        "description": "Percentage of agents (No disability, without overtaking behavior)",
+  "velocity": 1.24
+      },
+      "noDisabilityOvertaking" : {
+  "description": "Percentage of agents (No disability, with overtaking behavior)",
+            "velocity": 2.48
+      },
+      "crutches" : {
+  "description": "Percentage of agents (Walking with crutches)",
+            "velocity": 0.94
+      },
+  "sticks": {
+      "description": "Percentage of agents (Walking with sticks)",
+      "velocity": 0.81
+   },
+   "wheelchairs": {
+      "description": "Percentage of agents (Wheelchairs)",
+      "velocity": 0.69
+   },
+   "blind": {
+      "description": "Percentage of agents (The blind)",
+      "velocity": 0.52
+   },
+  "normal" : {
+        "description" : "normal distribution",
+        "samples" : "6",
+        "sumOfValues" : "numOfAgents" ,
+        "lowerBound" : "0",
+        "upperBound" : "10000"
+  }
+  
+    }
   },
-  "p2": {
-    "description": "Percentage of agents (No disability, with overtaking behavior)",
-    "value": 5
-  },
-  "p3": {
-    "description": "Percentage of agents (Walking with crutches)",
-    "value": 17
-  },
-  "p4": {
-    "description": "Percentage of agents (Walking with sticks)",
-    "value": 22
-  },
-  "p5": {
-    "description": "Percentage of agents (Wheelchairs)",
-    "value": 17
-  },
-  "p6": {
-    "description": "Percentage of agents (The blind)",
-    "value": 17
-  },
+  
   "hallwayLength": {
     "description": "Hallway length",
     "value": 30
@@ -91,5 +105,19 @@
   "randomness": {
     "description": "the option for establishing new randon configuration or load from the file",
     "value": 1
+  },
+
+  "ageDistribution" : {
+    "description" : "distribution of age in pedestrians",
+    "distribution": {
+      "normal" : {
+        "description" : "normal distribution",
+        "samples" : "numOfAgents",
+        "numberOfValues" : 100,
+        "minValue" : 5,
+        "maxValue" : 104
   }
+  }
+  }
+  
 }
