@@ -114,7 +114,7 @@
 },
       "normal" : {
                   "description" : "normal distribution",
-                  "samples" : "6",
+                  "samples" : 6,
                   "sumOfValues" : "numOfAgents" ,
                   "lowerBound" : "0",
                   "upperBound" : "10000"
@@ -126,19 +126,19 @@
   "distribution": {
           "forPatient" : {
                   "description" : "number of wards that a patient must visit",
-                  "value" : "3",
+                  "value" : 3,
                   "start" : "A",
                   "end": "A"
 },
           "forVisitor" : {
                   "description" : "number of wards that a visitor must visit",
-                  "value" : "1",
+                  "value" : 1,
                   "start" : "A",
                   "end": "A"
 },
 "forPersonel" : {
                   "description" : "number of wards that a personel must visit",
-                  "value" : "3",
+                  "value" : 3,
                   "start" : "wardDistribution",
                   "end": "start",
                   "threshold" : "noDisabilityNoOvertaking + noDisabilityOvertaking"
@@ -180,10 +180,10 @@
           },
 "normal" : {
                   "description" : "normal distribution",
-                  "samples" : "13",
+                  "samples" : 13,
                   "sumOfValues" : "forPersonel" ,
-                  "lowerBound" : "0",
-                  "upperBound" : "10000"
+                  "lowerBound" : 0,
+                  "upperBound" : 10000
 } 
 }
 },
@@ -192,22 +192,22 @@
   "distribution": {
           "open" : {
                   "description" : "open personalities are more optimistic when facing setbacks and will be more active in solving difficulties",
-                  "positiveEmotionThreshold" : "0.3",
-                  "negativeEmotionThreshold" : "-0.7",
+                  "positiveEmotionThreshold" : 0.3,
+                  "negativeEmotionThreshold" : -0.7,
                   "percentage" : 50,
                   "lambda" : 1
 }, 
           "neurotic" : {
                   "description" : "neurotic personalities tend to behave negatively in the face of the same frustration.",
-                  "positiveEmotionThreshold" : "0.6",
-                  "negativeEmotionThreshold" : "-0.4",
+                  "positiveEmotionThreshold" : 0.6,
+                  "negativeEmotionThreshold" : -0.4,
                   "percentage" : 50,
                   "lambda" : 4
 }
 },
 "heuristic" : {
-  "positiveEmotionThreshold" : "0.8",
-          "negativeEmotionThreshold" : "-0.8"
+  "positiveEmotionThreshold" : 0.8,
+          "negativeEmotionThreshold" : -0.8
 }
 },
 "insideTimeDistribution" : {
