@@ -99,7 +99,7 @@ vector<Event> genEvent(){
 	
 
 
-	ifstream file("data/event_distribution");
+	ifstream file("data/eventDistribution");
 	string line;
 	if(file.is_open()){
 		int i=0;
@@ -132,7 +132,7 @@ vector<Pedestrians> genPedestrians(){
 	  double lechChuan = randomDouble(1 - (double)inputData["experimentalDeviation"]["value"] / 100,
 	   1 + (double)inputData["experimentalDeviation"]["value"] / 100);
 	vector<double> ages;
-	ifstream f1("data/age_distribution");
+	ifstream f1("data/ageDistribution");
 	string line;
 	while(getline(f1,line)){
 		ages.push_back(stod(line));
@@ -239,7 +239,7 @@ vector<Pedestrians> genPedestrians(){
 	}
     outf.close();
 
-    cout << "Pedestrian generation successful" << endl;
+    cout << "Upload complete!" << endl;
     return;
 }
 					
