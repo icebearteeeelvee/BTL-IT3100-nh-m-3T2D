@@ -73,6 +73,8 @@ private:
     double time;
     vector<double> intensity;
 public:
+    Event();
+    Event(double time, vector<double> intensity);
     double getTime() const { return time; }
     vector<double> getIntensity() const { return intensity; }
 
