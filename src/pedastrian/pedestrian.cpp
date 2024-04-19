@@ -1,5 +1,5 @@
 #include "pedestrian.h"
-#include "lib/nlohmann/json.hpp"
+#include "C:\\Users\\ADMIN\\OneDrive - Hanoi University of Science and Technology\\Tài liệu\\GitHub\\BTL-IT3100-nh-m-3T2D\\lib\\nlohmann\\json.hpp"
 
 #include <iostream>
 #include <vector>
@@ -60,7 +60,7 @@ vector<Ward> genWard(){
 
 				point3.x=calcX( gate2.x ,width,true);
 				point3.y=gate2.y;
-				edges.push_back(point1);
+				edges.push_back(point3);
 				
 				point4.x=calcX( gate2.x ,width,true);
 				point4.y=gate2.y;
@@ -100,7 +100,6 @@ vector<Event> genEvent(){
 
 
 	ifstream file("data/eventDistribution");
-	string line;
 	if(file.is_open()){
 		int i=0;
 		while(getline(file,line)){
@@ -125,7 +124,7 @@ vector<Event> genEvent(){
 
 
 
-vector<Pedestrians> genPedestrians(){
+void genPedestrians(){
 	ifstream file("data/input.json");
 	json inputData= json::parse(file);
 	int ID=0;
@@ -176,6 +175,12 @@ vector<Pedestrians> genPedestrians(){
 			 	personnel.setVelocity(ID <= 75 ? NoDisabilityNoOvertaking_velocity 
 			 									: NoDisabilityOvertaking_velocity);
 				pedestrians.push_back(personnel);
+				for( int i=0; i<20;i++){
+						 Event event = events[randomInt(0, events.size() - 1)];
+						 events.push_back(event);
+					}
+					personnel.setEvents(events);
+                   pedestrians.push_back(personnel);
 				}
 				while(ID++<350){
 					Visitor visitor;
@@ -241,9 +246,11 @@ vector<Pedestrians> genPedestrians(){
 
     cout << "Upload complete!" << endl;
     return;
-}
+};
 					
-
+int main(){
+	genPedestrians();
+}
 
 		
 
