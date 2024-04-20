@@ -125,6 +125,7 @@ vector<Event> genEvent(){
 
 
 void genPedestrians(){
+	
 	ifstream file("data/input.json");
 	json inputData= json::parse(file);
 	int ID=0;
@@ -141,30 +142,35 @@ void genPedestrians(){
 
 	vector<Pedestrians> pedestrians;
 	vector<Event> events= genEvent();
+	vector<Ward> allWards= genWard();
 
 	// chia tỉ lệ :500=160+190+150
 
 	// chia nhỏ:75+95+100+90+113+37 
 	Pesonality open, neurotic;
-    open.setLambda(double(inputData["personalityDistribution"]["distribution"]["open"]["lambda"]));
-    open.setPositiveEmotionThreshold(double(inputData["personalityDistribution"]["distribution"]["open"]["positiveEmotionThreshold"]));
-    open.setNegativeEmotionThreshold(double(inputData["personalityDistribution"]["distribution"]["open"]["negativeEmotionThreshold"]));
-    neurotic.setLambda(double(inputData["personalityDistribution"]["distribution"]["neurotic"]["lambda"]));
-    neurotic.setPositiveEmotionThreshold(double(inputData["personalityDistribution"]["distribution"]["neurotic"]["positiveEmotionThreshold"]));
-    neurotic.setNegativeEmotionThreshold(double(inputData["personalityDistribution"]["distribution"]["neurotic"]["negativeEmotionThreshold"]));
+    open.setLambda(1);
+    open.setPositiveEmotionThreshold(0.3);
+    open.setNegativeEmotionThreshold(-0.7);
+    neurotic.setLambda(4);
+    neurotic.setPositiveEmotionThreshold(0.6);
+    neurotic.setNegativeEmotionThreshold(-0.4);
 
 
-	double NoDisabilityNoOvertaking_velocity = double(inputData["walkability"]["distribution"]["noDisabilityNoOvertaking"]["velocity"]) * lechChuan;
-    double NoDisabilityOvertaking_velocity = double(inputData["walkability"]["distribution"]["noDisabilityOvertaking"]["velocity"]) * lechChuan;
-    double Crutches_velocity = double(inputData["walkability"]["distribution"]["crutches"]["velocity"]) * lechChuan;
-    double Sticks_velocity = double(inputData["walkability"]["distribution"]["sticks"]["velocity"]) * lechChuan;
-    double Wheelchair_velocity = double(inputData["walkability"]["distribution"]["wheelchair"]["velocity"]) * lechChuan;
-    double Blind_velocity = double(inputData["walkability"]["distribution"]["blind"]["velocity"]) * lechChuan;
-	int tiLePesdetrian[]={160,190,150};
+	double NoDisabilityNoOvertaking_velocity = double(1.24) * lechChuan;
+    double NoDisabilityOvertaking_velocity = double(2.48) * lechChuan;
+    double Crutches_velocity = double(0.94) * lechChuan;
+    double Sticks_velocity = double(0.81) * lechChuan;
+    double Wheelchair_velocity = double(0.69) * lechChuan;
+    double Blind_velocity = double(0.52) * lechChuan;
+	//int tiLePesdetrian[]={160,190,150};
+//A:13 33 13 41 3 37 25 37
+			
 
-	
+
 				
 				while(ID++<=160){
+				vector<Ward> journey;
+				vector<Ward> ward;
 			  	Personnel personnel;
                 vector<Event> events;
                 personnel.setID(ID);
@@ -179,11 +185,18 @@ void genPedestrians(){
 						 Event event = events[randomInt(0, events.size() - 1)];
 						 events.push_back(event);
 					}
-					personnel.setEvents(events);
-                   pedestrians.push_back(personnel);
+				ward.push_back(allWards[randomInt(0,9)]);
+				personnel.setJourney(ward);
+				personnel.setEvents(events);
+				personnel.setStart(allWards[8]);
+				personnel.setEnd(allWards[8]);
+
+                pedestrians.push_back(personnel);
 				}
 				while(ID++<350){
 					Visitor visitor;
+					vector<Ward> journey;
+					vector<Ward> ward;
                     vector<Event> events;
                     visitor.setID(ID);
 
@@ -194,6 +207,15 @@ void genPedestrians(){
 						 Event event = events[randomInt(0, events.size() - 1)];
 						 events.push_back(event);
 					}
+				int i= randomInt(0,7);
+				ward.push_back(allWards[i]);
+				int j = randomInt(i,8);
+				ward.push_back(allWards[j]);
+				ward.push_back(allWards[randomInt(j,9)]);
+				visitor.setJourney(ward);
+				visitor.setStart(allWards[8]);
+				visitor.setEnd(allWards[8]);
+
 					visitor.setEvents(events);
                    pedestrians.push_back(visitor);
 				}
@@ -201,12 +223,20 @@ void genPedestrians(){
 					
 				    Patient patient; 
 				    vector<Event> events;
+					vector<Ward> journey;
+					vector<Ward> ward;
 				    patient.setID(ID); 
 
 				    patient.setAge(ages[randomInt(0, ages.size() - 1)]); 
                     patient.setPersonality(patient.getAge() < 11 ? open : neurotic);  
                     patient.setVelocity(ID <= 113 ? Wheelchair_velocity : Blind_velocity); 
-                    
+                    ward.push_back(allWards[randomInt(0,9)]);
+					patient.setJourney(ward);
+					patient.setEvents(events);
+					patient.setStart(allWards[8]);
+				 	patient.setEnd(allWards[8]);
+
+                   pedestrians.push_back(patient);
 
                     for (int k = 0; k < 20; k++) {
 					    Event event = events[randomInt(0, events.size() - 1)];
@@ -216,7 +246,7 @@ void genPedestrians(){
 				    pedestrians.push_back(patient);
 
 				}
-				 ofstream outf("data/pedestrian.txt", ios::app);
+				 ofstream outf("D:\\Downloads\\BTL\\BTL-IT3100-nh-m-3T2D-bai_3\\data\\pedestrian.txt", ios::app);
     if (!outf.is_open()) {
         cout << "File creation failed" << endl;
         return;
@@ -245,7 +275,7 @@ void genPedestrians(){
     outf.close();
 
     cout << "Upload complete!" << endl;
-    return;
+   return;
 };
 					
 int main(){
@@ -265,6 +295,5 @@ int main(){
 
 
 	
-
 
 
