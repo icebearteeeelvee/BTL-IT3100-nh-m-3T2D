@@ -14,6 +14,8 @@ struct Point{
 class Ward{
     private: 
         string nameOfWard;
+       
+
         Point enter ;
         Point exit;
         vector<Point> wallBound;
@@ -21,10 +23,10 @@ class Ward{
     Ward(){};
     Ward(string nameOfward, Point enter, Point exit, vector<Point> wallBound){};
 
-    void setNameOfWard(){ this->nameOfWard= nameOfWard;}
-    void setEnter(){ this->enter=enter;}
-    void setExit(){ this->exit=exit;}
-    void setWallBound(){this->wallBound=wallBound;}
+    void setNameOfWard(string nameOfWard){ this->nameOfWard= nameOfWard;}
+    void setEnter(Point enter){ this->enter=enter;}
+    void setExit(Point exxit){ this->exit=exit;}
+    void setWallBound(vector<Point> wallBound){this->wallBound=wallBound;}
 
     string getNameOfWard() {return this->nameOfWard ;}
     Point getEnter(){ return this->enter;}
@@ -73,8 +75,8 @@ private:
     double time;
     vector<double> intensity;
 public:
-    Event();
-    Event(double time, vector<double> intensity);
+    Event(){};
+    Event(double time, vector<double> intensity){};
     double getTime() const { return time; }
     vector<double> getIntensity() const { return intensity; }
 
@@ -107,16 +109,16 @@ class Pedestrians{
  int getID() const { return ID; }
   void setID(int id) { ID = id; }
 
-  const Ward& getStart() const { return this->start; }
+   Ward& getStart()  { return this->start; }
   void setStart(const Ward& newStart) { this->start = newStart; }
 
-  const Ward& getEnd() const { return this->end; }
+   Ward& getEnd()  { return this->end; }
   void setEnd(const Ward& newEnd) { this->end = newEnd; }
 
-  const vector<Ward>& getJourney() const { return this->journey; }
+   vector<Ward> getJourney()  { return this->journey; }
   void setJourney(const vector<Ward>& newJourney) {this-> journey = newJourney; }
 
-  double getVelocity() const { return this-> velocity; }
+  double getVelocity()  { return this-> velocity; }
   void setVelocity(double newVelocity) {this-> velocity = newVelocity; }
  
   const Pesonality& getPersonality() const { return this-> personality; }
