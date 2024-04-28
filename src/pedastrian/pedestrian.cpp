@@ -187,11 +187,20 @@ void genPedestrians(){
 						 Event event = events[randomInt(0, events.size() - 1)];
 						 events.push_back(event);
 					}
-				ward.push_back(allWards[randomInt(0,9)]);
+
+				int i= randomInt(0,6);
+				ward.push_back(allWards[i]);
+				int j = randomInt(i,7);
+				ward.push_back(allWards[j]);
+				ward.push_back(allWards[randomInt(j,8)]);
+				personnel.setJourney(ward);
+
 				personnel.setJourney(ward);
 				personnel.setEvents(events);
-				personnel.setStart(allWards[8]);
-				personnel.setEnd(allWards[8]);
+
+				Ward des = allWards[randomInt(0,9)];
+				personnel.setStart(des);
+				personnel.setEnd(des);
 
                 pedestrians.push_back(personnel);
 				}
@@ -209,14 +218,15 @@ void genPedestrians(){
 						 Event event = events[randomInt(0, events.size() - 1)];
 						 events.push_back(event);
 					}
-				int i= randomInt(0,7);
+				int i= randomInt(0,6);
 				ward.push_back(allWards[i]);
-				int j = randomInt(i,8);
+				int j = randomInt(i,7);
 				ward.push_back(allWards[j]);
-				ward.push_back(allWards[randomInt(j,9)]);
+				ward.push_back(allWards[randomInt(j,8)]);
 				visitor.setJourney(ward);
+
 				visitor.setStart(allWards[8]);
-				visitor.setEnd(allWards[8]);
+				visitor.setEnd(allWards[8]);     //Về sau phải sửa cái này về khu A tức allWards[9]
 
 					visitor.setEvents(events);
                    pedestrians.push_back(visitor);
@@ -232,7 +242,7 @@ void genPedestrians(){
 				    patient.setAge(ages[randomInt(0, ages.size() - 1)]); 
                     patient.setPersonality(patient.getAge() < 11 ? open : neurotic);  
                     patient.setVelocity(ID <= 113 ? Wheelchair_velocity : Blind_velocity); 
-                    ward.push_back(allWards[randomInt(0,9)]);
+                    ward.push_back(allWards[randomInt(1,9)]);
 					patient.setJourney(ward);
 					patient.setEvents(events);
 					patient.setStart(allWards[8]);
@@ -279,90 +289,86 @@ void genPedestrians(){
     cout << "Upload complete!" << endl;
    return;
 };
-//Bai_6:
-vector<vector<double>> impactOnEmo(Pedestrians p, int timeHorizon){
-	//events  = p.getEvents( )
-	vector<vector<double>> events=p.getEvents();
-	
-	//lambda = p.getLambda( )
-	double lambda = p.getPersonality().getLambda();
-	//times = p.getTimeDistances( ) 
-	vector<int> times(19);
-	for (int i = 0; i < 19; ++i) {
-        times[i] = randomInt(4, 10);
+//Bai_7:
+vector<vector<double>> getImpact(int samples, double min, double max){
+	vector<vector<double>> impacts;
+    for (int i = 0; i < samples; i++) {
+        vector<double> impact(6);
+        for (int j = 0; j < 6; j++) {
+            impact[j] = lround(randomDouble(min, max) * 100) / 100.0;
+        }
+        impacts.push_back(impact);
     }
 
-	vector<vector<double>> allEmotions={
-		{p.getEmotion().getAnger()},
-		{p.getEmotion().getHate()},
-		{p.getEmotion().getFear()},
-		{p.getEmotion().getSad()},
-		{p.getEmotion().getSurprise()},
-		{p.getEmotion().getPleasure()},
+    return impacts;
 	};
 
-	double ple = events[0][0] + allEmotions[0][0]*exp(-lambda) + allEmotions[0][0];
-	double su = events[1][0] + allEmotions[1][0]*exp(-lambda) + allEmotions[1][0];
-	double a = events[2][0] + allEmotions[2][0]*exp(-lambda) + allEmotions[2][0];
-	double f = events[3][0] + allEmotions[3][0]*exp(-lambda) + allEmotions[3][0];
-	double h = events[4][0] + allEmotions[4][0]*exp(-lambda) + allEmotions[4][0];
-	double sa = events[5][0] + allEmotions[5][0]*exp(-lambda) + allEmotions[5][0];
+vector<vector<double>> impactOfAGV(vector<Pedestrians> allPedestrians){
+	vector<vector<double>> res;
 
-	int lastTime = 0;
-	int index = 0;
-	int H=allEmotions[0].size();
-	int idxIn=H+2;
+	int children = 0, ALKW = 0, BFGMEN = 0, elder = 0, blinder = 0, others = 0;
+	bool isOthers=true;
+	for( Pedestrians pes: allPedestrians){
+		if(pes.getAge()<12){
+			children++;
+			isOthers=false;} //1:visitor 2//patient 3:personnel
+		if((pes.getID()<160&& pes.getVelocity() > 1)||(pes.getID()>160&&pes.getID()<350)){
+			string workplace = pes.getStart().getNameOfWard();
+            if (workplace == "A" || workplace == "L" || workplace == "K" || workplace == "W") ALKW++;
+            else BFGMEN++;
+			isOthers=false;
 
-
-	for(int i=0;i<=5;i++){
-	allEmotions[i].resize(H+1+H-1-2+1,0); //H+1 là kích thước mảng sau khi thêm phần tử đầu
-										//(H-1)-2+1 là kích thước mảng append thêm sau vòng for tiếp theo
+		}
+		if(pes.getAge()>60)
+			{ elder++;
+			isOthers=false;
+			}
+		if (pes.getVelocity() < 0.58){ 
+			blinder++;
+			isOthers=false;}
+		if(isOthers==true) others++;
 	}
-
-	allEmotions[0][H+1]=ple;
-	allEmotions[1][H+1]=su;
-	allEmotions[2][H+1]=a;
-	allEmotions[3][H+1]=f;
-	allEmotions[4][H+1]=h;
-	allEmotions[5][H+1]=sa;
-
-	for(int i=2;i<H;i++){
-		ple = allEmotions[0][i];
-		su = allEmotions[1][i];
-		a = allEmotions[2][i];
-		f = allEmotions[3][i];
-		h = allEmotions[4][i];
-		sa = allEmotions[5][i];
-		if(i - lastTime == times[index]){
-			index += 1;
-			int lastTime  = i;
-			ple += allEmotions[0][i]*exp(-lambda) + events[0][index] ;
-			su += allEmotions[1][i]*exp(-lambda) + events[1][index] ;
-			a += allEmotions[2][i]*exp(-lambda) + events[2][index] ;
-			f += allEmotions[3][i]*exp(-lambda) + events[3][index] ;
-			h += allEmotions[4][i]*exp(-lambda) + events[4][index] ;
-			sa += allEmotions[5][i]*exp(-lambda) + events[5][index] ;
-		};//do là điều kiện đúng hay sai thì allEmotions[a][index] cũng đều append thêm giá trị
-		// do đó bản thân mảng phải có giới hạn chứ không thể giới hạn bằng vi phạm điều kiện if
-
-		
-		
-		allEmotions[0][idxIn]=ple;	// allEmotions[0].append(p);
-		allEmotions[1][idxIn]=su;	// allEmotions[1].append(su);
-		allEmotions[2][idxIn]=a;	// allEmotions[2].append(a);
-		allEmotions[3][idxIn]=f;	// allEmotions[3].append(f);
-		allEmotions[4][idxIn]=h;	// allEmotions[4].append(h);
-		allEmotions[5][idxIn]=sa;	// allEmotions[5].append(sa);
-
-
-		idxIn++;
-	}
-
-	return allEmotions;
-	};
-
-
-
+	vector<vector<double>> childrenImpacts = getImpact(children, 0.01, 0.99);
+    vector<vector<double>> ALKWImpacts = getImpact(ALKW, -0.29, 0.99);
+    vector<vector<double>> BFGMENImpacts = getImpact(BFGMEN, -0.99, 0.29);
+    vector<vector<double>> elderImpacts = getImpact(elder, -0.99, 0.29);
+    vector<vector<double>> blinderImpacts = getImpact(blinder, -0.99, 0.29);
+    vector<vector<double>> othersImpacts = getImpact(others, -0.99, 0.99);
+	for( Pedestrians pes: allPedestrians){
+	//	vector<vector<double>> impactOfAGV= {{0},{0},{0},{0},{0},{0}};
+		  AGVEvents agv_event;
+        if (pes.getAge() < 12) {
+            agv_event.setIntensity(childrenImpacts.back());
+            childrenImpacts.pop_back();
+        }
+        else if((pes.getID()<160&& pes.getVelocity() > 1)||(pes.getID()>160&&pes.getID()<350)){
+            string workplace = pes.getStart().getNameOfWard();
+            if (workplace == "A" || workplace == "L" || workplace == "K" || workplace == "W") {
+                agv_event.setIntensity(ALKWImpacts.back());
+                ALKWImpacts.pop_back();
+            }
+            else {
+                agv_event.setIntensity(BFGMENImpacts.back());
+                BFGMENImpacts.pop_back();
+            }
+        }
+        else if (pes.getAge() > 60) {
+            agv_event.setIntensity(elderImpacts.back());
+            elderImpacts.pop_back();
+        }
+        else if (pes.getVelocity() < 0.58) {
+            agv_event.setIntensity(blinderImpacts.back());
+            blinderImpacts.pop_back();
+        }
+        else {
+            agv_event.setIntensity(othersImpacts.back());
+            othersImpacts.pop_back();
+        }
+        pes.setImpactofAGV(agv_event);
+        res.push_back(agv_event.getIntensity());
+    }
+return res;
+}
 
 
 
